@@ -1,4 +1,4 @@
-package com.unifor.arquitetura;
+package com.unifor.arquiteturas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

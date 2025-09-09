@@ -1,37 +1,33 @@
-package com.unifor.arquitetura.serviceImpl;
+package com.unifor.arquiteturas.serviceImpl;
+
+import com.unifor.arquiteturas.models.User;
+import com.unifor.arquiteturas.repository.UserRepository;
+import com.unifor.arquiteturas.services.UserIterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.unifor.arquitetura.models.User;
-import com.unifor.arquitetura.repository.UserRepository;
-import com.unifor.arquitetura.services.UserService;
-
 @Service
-public class UserServiceImpl implements UserService {
-    
-    private final UserRepository userRepository;
+public class UserServiceImpl implements UserIterface {
     
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    
+    private UserRepository repository;
+
     @Override
     public User createUser(User user) {
-        return userRepository.save(user);
+        return repository.save(user);
     }
-    
+
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<User> GetAllUsers() {
+        return repository.findAll();
     }
-    
+
     @Override
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUseById(Long id) {
+        Optional<User> user = repository.findById(id);
+        return user.orElse(null);
     }
 }

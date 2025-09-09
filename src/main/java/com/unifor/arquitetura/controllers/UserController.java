@@ -1,46 +1,31 @@
-package com.unifor.arquitetura.controllers;
+package com.unifor.arquiteturas.controllers;
 
-import com.unifor.arquitetura.models.User;
-import com.unifor.arquitetura.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.unifor.arquiteturas.models.User;
+import com.unifor.arquiteturas.services.UserIterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("cadastrar-usuario")
 public class UserController {
-    
-    private final UserService userService;
-    
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+
+    private UserIterface userIterface;
+
+    @PostMapping("/create")
+    public ResponseEntity<User> CreateUser(@RequestBody  User user) {
+        return ResponseEntity.ok(userIterface.createUser(user));
     }
-    
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User createdUser = userService.createUser(user);
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+    @GetMapping("/allUsers")
+    public ResponseEntity<List<User>> getAllUser() {
+        return ResponseEntity.ok(userIterface.GetAllUsers());
     }
-    
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<User> getUserById(@RequestParam long id) {
+        return ResponseEntity.ok(userIterface.getUseById(id));
     }
+
 }
